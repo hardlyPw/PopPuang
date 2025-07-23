@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>팝푸앙</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('images/software_logo.jpg'); /* 배경 이미지 추가 */
+            background-repeat: no-repeat;
+            background-size: 700px auto; /* 화면에 꽉 차게 */
+            background-position: center center;
+        }
+
+        .header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 10px;
+            background-color: #004c97;
+        }
+
+        .header form {
+            margin-left: 10px;
+        }
+
+        .header button {
+            padding: 8px 16px;
+            background-color: #ecf0f1;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .header button:hover {
+            background-color: #bdc3c7;
+        }
+
+        .center-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 50px;
+        }
+
+        .image-button img {
+            margin-top: 160px;
+            width: 400px;
+            max-width: 80%;
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .image-button img:hover {
+            transform: scale(1.05);
+        }
+
+        .leaderboard {
+            margin-top: 160px;
+            width: 80%;
+            max-width: 600px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+
+        .leaderboard h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        .leaderboard ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .leaderboard li {
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            font-size: 1em;
+        }
+
+        .leaderboard li:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+<!-- 상단 헤더 -->
+<div class="header">
+    <div th:if="${isLoggedIn}">
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">로그아웃</button>
+        </form>
+    </div>
+
+    <div th:unless="${isLoggedIn}" style="display: flex;">
+        <form th:action="@{/login}" method="post">
+            <button type="submit">로그인</button>
+        </form>
+        <form th:action="@{/register}" method="post">
+            <button type="submit">회원가입</button>
+        </form>
+    </div>
+</div>
+
+
+<!-- 중앙 컨텐츠 -->
+<div class="center-container">
+    <!-- 푸앙 이미지 버튼 -->
+    <form th:action="@{/click}" method="post" class="image-button">
+        <button type="submit" style="border:none; background:none; cursor:pointer;">
+            <img src="images/puang.png" alt="푸앙이">
+        </button>
+    </form>
+
+    <!-- 리더보드 영역 -->
+    <div class="leaderboard">
+        <h2>리더보드</h2>
+        <ul>
+            <li><span>1위</span> <span>소프트웨어학부</span> <span>99</span></li>
+            <li><span>2위</span> <span>AI학과</span> <span>10</span></li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>
