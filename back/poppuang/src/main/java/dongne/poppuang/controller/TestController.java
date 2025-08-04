@@ -1,7 +1,6 @@
-package com.tpopractice.myspringpractice.controller;
+package dongne.poppuang.controller;
 
-import com.tpopractice.myspringpractice.service.ClickService;
-import com.tpopractice.myspringpractice.service.TestService;
+import dongne.poppuang.service.TestService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 

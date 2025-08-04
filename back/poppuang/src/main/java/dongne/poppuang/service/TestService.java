@@ -1,7 +1,7 @@
-package com.tpopractice.myspringpractice.service;
+package dongne.poppuang.service;
 
-import com.tpopractice.myspringpractice.domain.Major;
-import com.tpopractice.myspringpractice.repository.TestRepository;
+import dongne.poppuang.domain.Major;
+import dongne.poppuang.repository.TestRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

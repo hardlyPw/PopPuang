@@ -1,6 +1,6 @@
-package com.tpopractice.myspringpractice.controller;
+package dongne.poppuang.controller;
 
-import com.tpopractice.myspringpractice.service.ClickService;
+import dongne.poppuang.service.ClickService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 

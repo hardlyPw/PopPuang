@@ -1,7 +1,7 @@
-package com.tpopractice.myspringpractice.controller;
+package dongne.poppuang.controller;
 
-import com.tpopractice.myspringpractice.domain.LeaderboardEntry;
-import com.tpopractice.myspringpractice.service.LeaderboardService;
+import dongne.poppuang.domain.LeaderboardEntry;
+import dongne.poppuang.service.LeaderboardService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 

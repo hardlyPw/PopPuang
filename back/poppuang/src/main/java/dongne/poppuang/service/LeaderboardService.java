@@ -1,6 +1,6 @@
-package com.tpopractice.myspringpractice.service;
+package dongne.poppuang.service;
 
-import com.tpopractice.myspringpractice.domain.LeaderboardEntry;
+import dongne.poppuang.domain.LeaderboardEntry;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

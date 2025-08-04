@@ -1,7 +1,7 @@
-package com.tpopractice.myspringpractice.controller;
+package dongne.poppuang.controller;
 
-import com.tpopractice.myspringpractice.domain.User;
-import com.tpopractice.myspringpractice.service.UserService;
+import dongne.poppuang.domain.User;
+import dongne.poppuang.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 

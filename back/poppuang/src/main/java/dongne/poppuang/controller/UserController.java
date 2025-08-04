@@ -1,7 +1,7 @@
-package com.tpopractice.myspringpractice.controller;
+package dongne.poppuang.controller;
 
-import com.tpopractice.myspringpractice.domain.RegisterDto;
-import com.tpopractice.myspringpractice.service.UserService;
+import dongne.poppuang.domain.RegisterDto;
+import dongne.poppuang.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;

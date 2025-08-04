@@ -1,6 +1,6 @@
-package com.tpopractice.myspringpractice.repository;
+package dongne.poppuang.repository;
 
-import com.tpopractice.myspringpractice.domain.User;
+import dongne.poppuang.domain.User;
 
 import java.util.List;
 import java.util.Optional;

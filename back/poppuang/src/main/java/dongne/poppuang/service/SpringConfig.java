@@ -1,7 +1,7 @@
-package com.tpopractice.myspringpractice.service;
+package dongne.poppuang.service;
 
-import com.tpopractice.myspringpractice.repository.JpaUserRepository;
-import com.tpopractice.myspringpractice.repository.UserRepository;
+import dongne.poppuang.repository.JpaUserRepository;
+import dongne.poppuang.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

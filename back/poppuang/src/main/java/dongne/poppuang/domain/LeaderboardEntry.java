@@ -1,4 +1,4 @@
-package com.tpopractice.myspringpractice.domain;
+package dongne.poppuang.domain;
 
 import lombok.Getter;
 

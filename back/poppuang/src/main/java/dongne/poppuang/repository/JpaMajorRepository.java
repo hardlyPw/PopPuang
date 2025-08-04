@@ -1,6 +1,6 @@
-package com.tpopractice.myspringpractice.repository;
+package dongne.poppuang.repository;
 
-import com.tpopractice.myspringpractice.domain.Major;
+import dongne.poppuang.domain.Major;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
