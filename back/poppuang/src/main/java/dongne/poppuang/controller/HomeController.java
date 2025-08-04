@@ -1,5 +1,7 @@
-package dongne.poppuang.controller;
+package com.tpopractice.myspringpractice.controller;
 
+import com.tpopractice.myspringpractice.domain.LeaderboardEntry;
+import com.tpopractice.myspringpractice.service.LeaderboardService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,14 +20,11 @@ public class HomeController {
     }
 
     @GetMapping("/register")
-    @PostMapping("/register")
     public String signup() {
-        System.out.println("출력");
         return "signUp";
     }
 
     @GetMapping("/login")
-    @PostMapping("/login")
     public String login() {
         return "login";
     }

@@ -9,24 +9,15 @@ import java.sql.Timestamp;
 @Entity
 @Getter
 @Setter
-@Table(name = "users")
-public class User {
+@Table(name = "majors")
+public class Major {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @Column(nullable = false)
-    private String uid;
-
-    @Column(nullable = false)
-    private String major;
-
-    @Column(nullable = false)
-    private String pw;
+    private String name;
 
     @Column(nullable = false)
     private Long clicks;
-
-    @Column(nullable = false)
-    private Timestamp created_at;
 }

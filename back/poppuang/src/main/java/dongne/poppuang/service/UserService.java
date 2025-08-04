@@ -1,9 +1,8 @@
-package dongne.poppuang.service;
+package com.tpopractice.myspringpractice.service;
 
-
-import dongne.poppuang.domain.RegisterDto;
-import dongne.poppuang.domain.User;
-import dongne.poppuang.repository.UserRepository;
+import com.tpopractice.myspringpractice.domain.RegisterDto;
+import com.tpopractice.myspringpractice.domain.User;
+import com.tpopractice.myspringpractice.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,5 +28,9 @@ public class UserService {
 
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    public Optional<User> findByUid(String uid) {
+        return userRepository.findByUid(uid);
     }
 }
