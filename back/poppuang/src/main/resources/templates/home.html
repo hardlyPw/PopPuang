@@ -8,7 +8,7 @@
             font-family: 'Segoe UI', sans-serif;
             margin: 0;
             padding: 0;
-            background-image: url('../static/software_logo.jpg'); /* 배경 이미지 추가 */
+            background-image: url('/images/software_logo.jpg'); /* 배경 이미지 추가 */
             background-repeat: no-repeat;
             background-size: 700px auto; /* 화면에 꽉 차게 */
             background-position: center;
@@ -118,26 +118,53 @@
 <div class="center-container">
     <!-- 이미지 버튼 클릭 시 Ajax 호출 -->
     <div class="image-button">
-        <img src="/images/puang.png" alt="푸앙이" onclick="sendClick()" style="cursor:pointer;" />
+        <img
+                id="puangImg"
+                src="/images/poppuang-closed.png"
+                alt="푸앙이"
+                style="cursor:pointer;"
+        />
     </div>
 
     <script>
+        // 토글 상태 관리 변수
+        let isOpen = false;
+
+        // 이미지 엘리먼트 참조
+        const puangImg = document.getElementById('puangImg');
+
+        // 클릭 핸들러 등록: 이미지 토글 + 클릭 카운트 로직
+        puangImg.addEventListener('click', () => {
+            // 1) 이미지 토글
+            isOpen = !isOpen;
+            puangImg.src = isOpen
+                ? '/poppuang-open.png'
+                : '/poppuang-closed.png';
+
+            // 2) 기존 클릭 카운트 로직
+            sendClick();
+        });
+
+        // 기존 sendClick() 함수
         function sendClick() {
-          fetch("/click", { method: "POST" })
-            .then(res => {
-              if (!res.ok) throw new Error("클릭 처리 실패!");
-              return fetch("/leaderboard"); // 클릭 후 최신 랭킹 불러오기
-            })
-            .then(res => res.json())
-            .then(data => {
-              const ul = document.querySelector(".leaderboard ul");
-              ul.innerHTML = data.map((item, i) =>
-                `<li><span>${i + 1}위</span> <span>${item.major}</span> <span>${item.clicks}</span></li>`
-              ).join("");
-            })
-            .catch(err => console.error(err));
+            fetch('/click', { method: 'POST' })
+                .then(res => {
+                    if (!res.ok) throw new Error('클릭 처리 실패!');
+                    return fetch('/leaderboard');
+                })
+                .then(res => res.json())
+                .then(data => {
+                    const ul = document.querySelector('.leaderboard ul');
+                    ul.innerHTML = data
+                        .map((item, i) =>
+                            `<li><span>${i + 1}위</span> <span>${item.major}</span> <span>${item.clicks}</span></li>`
+                        )
+                        .join('');
+                })
+                .catch(err => console.error(err));
         }
     </script>
+
 
 
     <!-- 리더보드 영역 -->
