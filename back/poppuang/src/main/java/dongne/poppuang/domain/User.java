@@ -26,12 +26,13 @@ public class User {
     private String pw;
 
     @Column(nullable = false)
-    private Long clicks;
-
-    @Column(nullable = false)
     private Timestamp created_at;
 
     //유저의 클릭 수를 나타내는 변수
     @Column(nullable = false)
     private Long clicks = 0L;
+
+    public Long clickIncrement() {
+        return ++(this.clicks);
+    }
 }

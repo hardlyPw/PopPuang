@@ -14,10 +14,8 @@ public class MajorService {
         fillOutMajors();  // 시작 시 학과 테이블 채움 (clicks = 0)
     }
 
-
-
     @Transactional
-    private void fillOutMajors() {
+    protected void fillOutMajors() {
         for (EnumMajors enumMajor : EnumMajors.values()) {
             Major major = generateMajor(enumMajor.name());
             majorRepository.addMajor(major);

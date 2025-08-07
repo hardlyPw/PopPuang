@@ -29,7 +29,7 @@ public class UserService {
         // 아이디 중복 확인 필요
 
         EnumMajors enum_major = EnumMajors.valueOf(registerDto.getDepartment());
-        Optional<Major> major = majorRepository.findById(Long.valueOf(enum_major.ordinal()));
+        Optional<Major> major = majorRepository.findById((long) (enum_major.ordinal() + 1));
         // 학과명이 없을 때 로직 필요 (major == null 일 때)
 
         String pw = registerDto.getPassword();
@@ -45,8 +45,14 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public List<User> findAll() {
-        return userRepository.findAll();
+    // n분에 한번씩 실행되게 해야 함
+    @Transactional
+    public void applyClicks() {
+        for (User user : userRepository.findAll()) {
+            user.getMajor().setClicks(user.getMajor().getClicks() + user.getClicks());
+            userRepository.save(user);
+            user.setClicks(0L);
+        }
     }
 
     // 이 메서드 추가
@@ -56,9 +62,5 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found: " + userId));
         user.setClicks(user.getClicks() + 1);
         userRepository.save(user);  // JPA 영속성 컨텍스트가 관리 중이면 save() 없이도 flush 시 반영됩니다.
-    }
-
-    public Optional<User> findByUid(String uid) {
-        return userRepository.findByUid(uid);
     }
 }

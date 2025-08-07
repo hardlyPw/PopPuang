@@ -43,6 +43,7 @@ public class JpaMajorRepository implements MajorRepository {
         return em.createQuery("SELECT m FROM Major m", Major.class).getResultList();
     }
 
+
     @Override
     public Major addMajor(Major major) {
         em.persist(major);
