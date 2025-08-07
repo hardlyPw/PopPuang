@@ -1,6 +1,5 @@
 package dongne.poppuang.repository;
 
-
 import dongne.poppuang.domain.User;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
@@ -19,6 +18,20 @@ public class JpaUserRepository implements UserRepository {
     public User save(User user) {
         em.persist(user);
         return user;
+    }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        User user = em.find(User.class, id);
+        return Optional.ofNullable(user);
+    }
+
+    @Override
+    public Optional<User> findByUid(String uid) {
+        List<User> result = em.createQuery("SELECT u FROM User u WHERE u.uid = :uid", User.class)
+                .setParameter("uid", uid)
+                .getResultList();
+        return result.stream().findAny();
     }
 
     @Override

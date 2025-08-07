@@ -9,12 +9,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class UserController {
     UserService userService;
-    public UserController(UserService userService) {this.userService = userService;}
+    public UserController(UserService userService) { this.userService = userService; }
 
     @PostMapping("/register-submit")
-    public String registerSubmit(@ModelAttribute RegisterDto registerDto){
+    public String registerSubmit(@ModelAttribute RegisterDto registerDto) {
         userService.createUser(registerDto);
         return "redirect:/login";
+    }
+
+    @PostMapping("/login")
+    public String login(@ModelAttribute RegisterDto registerDto) {
+        return "redirect:/";
     }
 
 }

@@ -1,6 +1,5 @@
 package dongne.poppuang.service;
 
-
 import dongne.poppuang.domain.RegisterDto;
 import dongne.poppuang.domain.User;
 import dongne.poppuang.repository.UserRepository;
@@ -31,7 +30,6 @@ public class UserService {
         return userRepository.findAll();
     }
 
-
     // 이 메서드 추가
     @Transactional
     public void incrementClicks(Long userId) {
@@ -39,5 +37,9 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found: " + userId));
         user.setClicks(user.getClicks() + 1);
         userRepository.save(user);  // JPA 영속성 컨텍스트가 관리 중이면 save() 없이도 flush 시 반영됩니다.
+    }
+
+    public Optional<User> findByUid(String uid) {
+        return userRepository.findByUid(uid);
     }
 }
