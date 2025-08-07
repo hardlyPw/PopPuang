@@ -10,4 +10,5 @@ public interface UserRepository {
     Optional<User> findById(Long id);
     Optional<User> findByUid(String uid);
     List<User> findAll();
+    Optional<User> findById(Long id);  // ← 추가
 }
