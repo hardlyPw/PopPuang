@@ -1,19 +1,16 @@
 package dongne.poppuang.controller;
 
-import dongne.poppuang.domain.User;
 import dongne.poppuang.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
-
 @Controller
-public class ClickController {
+public class ClickController2 {
 
     private final UserService userService;
 
-    public ClickController(UserService userService) {
+    public ClickController2(UserService userService) {
         this.userService = userService;
     }
 
