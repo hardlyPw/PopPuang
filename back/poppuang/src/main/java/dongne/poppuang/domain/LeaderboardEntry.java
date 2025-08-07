@@ -5,9 +5,9 @@ import lombok.Getter;
 @Getter
 public class LeaderboardEntry {
     private String major;
-    private int clicks;
+    private Long clicks;
 
-    public LeaderboardEntry(String major, int clicks) {
+    public LeaderboardEntry(String major, Long clicks) {
         this.major = major;
         this.clicks = clicks;
     }

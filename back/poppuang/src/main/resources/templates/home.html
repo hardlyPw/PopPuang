@@ -145,13 +145,10 @@
             sendClick();
         });
 
-        // 기존 sendClick() 함수
-        function sendClick() {
-            fetch('/click', { method: 'POST' })
-                .then(res => {
-                    if (!res.ok) throw new Error('클릭 처리 실패!');
-                    return fetch('/leaderboard');
-                })
+
+        // 리더보드 불러오는 함수
+        function loadLeaderboard() {
+            fetch('/leaderboard')
                 .then(res => res.json())
                 .then(data => {
                     const ul = document.querySelector('.leaderboard ul');
@@ -161,8 +158,21 @@
                         )
                         .join('');
                 })
+                .catch(err => console.error('리더보드 로딩 실패:', err));
+        }
+
+        // 기존 sendClick() 함수
+        function sendClick() {
+            fetch('/click', { method: 'POST' })
+                .then(res => {
+                    if (!res.ok) throw new Error('클릭 처리 실패!');
+                    return loadLeaderboard(); // 클릭 후 리더보드 갱신
+                })
                 .catch(err => console.error(err));
         }
+
+        // 페이지 로드되면 리더보드 표시
+        window.addEventListener('DOMContentLoaded', loadLeaderboard);
     </script>
 
 

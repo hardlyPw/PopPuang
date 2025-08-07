@@ -1,8 +1,10 @@
 package dongne.poppuang.service;
 
+import dongne.poppuang.domain.EnumMajors;
 import dongne.poppuang.repository.MajorRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import static dongne.poppuang.domain.EnumMajors.*;
 
 @Service
 public class ClickService {
@@ -11,10 +13,10 @@ public class ClickService {
     public ClickService(MajorRepository majorRepository) { this.majorRepository = majorRepository; }
 
     @Transactional
-    public void addClick() {
-        long clicks = majorRepository.addClick("간호학과");
-        System.out.println();
-        System.out.println(clicks);
-        System.out.println();
+    public Long addClick(String major_name) {
+        EnumMajors enumMajor = EnumMajors.valueOf(major_name);
+        return majorRepository.addClick((long) enumMajor.ordinal());
     }
+
 }
+

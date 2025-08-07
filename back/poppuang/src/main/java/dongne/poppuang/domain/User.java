@@ -18,8 +18,9 @@ public class User {
     @Column(nullable = false)
     private String uid;
 
-    @Column(nullable = false)
-    private String major;
+    @ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name = "major_id")
+    private Major major;
 
     @Column(nullable = false)
     private String pw;
