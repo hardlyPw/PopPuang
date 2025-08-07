@@ -19,8 +19,6 @@ public class ClickService {
 
     @Transactional
     public Long addClick(String id) {
-        System.out.println();
-        System.out.println(Long.parseLong(id));
         Optional<User> user = userRepository.findById(Long.parseLong(id));
         // 유저가 존재하지 않는 경우 예외 처리 필요
 

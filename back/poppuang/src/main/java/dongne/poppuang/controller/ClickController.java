@@ -15,8 +15,6 @@ public class ClickController {
     // 푸앙이 클릭하면 쿠키의 major에 해당하는 값을 넣어줌, 지금은 TestController에서 임의로 설정함
     @PostMapping("/click")
     public void click(@CookieValue(name="id") String id) {
-        System.out.println();
-        System.out.println("Entered");
         clickService.addClick(id);
     }
 }
