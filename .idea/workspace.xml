@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b31bd758-553e-448d-b112-52532630356c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/back/poppuang/src/main/java/dongne/poppuang/service/ClickService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/poppuang/src/main/java/dongne/poppuang/service/ClickService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +33,7 @@
     "git-widget-placeholder": "feat/2",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/tpo56/Java Projects/Java Practice/pop-puang/PopPuang",
+    "last_opened_file_path": "D:/Repos/PopPuang",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -122,6 +122,7 @@
       <workItem from="1753286443756" duration="1612000" />
       <workItem from="1753289643734" duration="5995000" />
       <workItem from="1754580266093" duration="185000" />
+      <workItem from="1754616278178" duration="651000" />
     </task>
     <servers />
   </component>

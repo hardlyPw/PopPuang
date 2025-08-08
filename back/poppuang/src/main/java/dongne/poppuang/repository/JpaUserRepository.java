@@ -1,5 +1,6 @@
 package dongne.poppuang.repository;
 
+import dongne.poppuang.domain.Major;
 import dongne.poppuang.domain.User;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;

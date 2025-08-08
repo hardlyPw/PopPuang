@@ -21,5 +21,7 @@ public class Major {
     @Column(nullable = false)
     private Long clicks;
 
-
+    public Long clickIncrement() {
+        return ++(this.clicks);
+    }
 }
