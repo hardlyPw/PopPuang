@@ -18,14 +18,11 @@ public class User {
     @Column(nullable = false)
     private String uid;
 
-    @Column(nullable = false)
-    private String major;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Major major;
 
     @Column(nullable = false)
     private String pw;
-
-    @Column(nullable = false)
-    private Long clicks;
 
     @Column(nullable = false)
     private Timestamp created_at;
