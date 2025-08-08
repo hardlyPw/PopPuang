@@ -14,10 +14,10 @@ public class ClickController2 {
         this.userService = userService;
     }
 
-    @PostMapping("/click")
-    @ResponseBody
-    public void handleClick() {
-        Long testUserId = 1L;  // 테스트용 유저 ID
-        userService.incrementClicks(testUserId);
-    }
+//    @PostMapping("/click")
+//    @ResponseBody
+//    public void handleClick() {
+//        Long testUserId = 1L;  // 테스트용 유저 ID
+//        userService.incrementClicks(testUserId);
+//    }
 }

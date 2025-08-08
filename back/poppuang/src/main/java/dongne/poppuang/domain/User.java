@@ -18,7 +18,8 @@ public class User {
     @Column(nullable = false)
     private String uid;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name = "major_id")
     private Major major;
 
     @Column(nullable = false)
@@ -30,4 +31,8 @@ public class User {
     //유저의 클릭 수를 나타내는 변수
     @Column(nullable = false)
     private Long clicks = 0L;
+
+    public Long clickIncrement() {
+        return ++(this.clicks);
+    }
 }
