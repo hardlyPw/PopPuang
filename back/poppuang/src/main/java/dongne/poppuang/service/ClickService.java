@@ -1,20 +1,29 @@
 package dongne.poppuang.service;
 
+import dongne.poppuang.domain.EnumMajors;
+import dongne.poppuang.domain.User;
 import dongne.poppuang.repository.MajorRepository;
+import dongne.poppuang.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
+import static dongne.poppuang.domain.EnumMajors.*;
+
 @Service
 public class ClickService {
-    MajorRepository majorRepository;
+    UserRepository userRepository;
 
-    public ClickService(MajorRepository majorRepository) { this.majorRepository = majorRepository; }
+    public ClickService(UserRepository userRepository) { this.userRepository = userRepository; }
 
     @Transactional
-    public void addClick() {
-        long clicks = majorRepository.addClick("간호학과");
-        System.out.println();
-        System.out.println(clicks);
-        System.out.println();
+    public Long addClick(String id) {
+        Optional<User> user = userRepository.findById(Long.parseLong(id));
+        // 유저가 존재하지 않는 경우 예외 처리 필요
+
+        return user.get().clickIncrement();
     }
+    
 }
+

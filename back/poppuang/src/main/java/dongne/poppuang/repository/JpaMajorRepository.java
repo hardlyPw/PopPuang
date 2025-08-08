@@ -1,11 +1,13 @@
 package dongne.poppuang.repository;
 
 import dongne.poppuang.domain.Major;
+import dongne.poppuang.domain.User;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Transactional
@@ -14,12 +16,18 @@ public class JpaMajorRepository implements MajorRepository {
     public JpaMajorRepository(EntityManager em) { this.em = em; }
 
     @Override
-    public Long addClick(String name) {
-        Major target = findByName(name);
+    public Long addClick(Long id) {
+        Optional<Major> target = findById(id + 1);
 
-        target.setClicks(target.getClicks() + 1);
+        target.get().setClicks(target.get().getClicks() + 1);
 
-        return target.getClicks();
+        return target.get().getClicks();
+    }
+
+    @Override
+    public Optional<Major> findById(Long id) {
+        Major major = em.find(Major.class, id);
+        return Optional.ofNullable(major);
     }
 
     @Override
@@ -32,6 +40,15 @@ public class JpaMajorRepository implements MajorRepository {
 
     @Override
     public List<Major> findAll() {
-        return List.of();
+        return em.createQuery("SELECT m FROM Major m", Major.class).getResultList();
+    }
+
+
+    @Override
+    public Major addMajor(Major major) {
+        em.persist(major);
+        return major;
     }
 }
+
+

@@ -9,5 +9,4 @@ public interface UserRepository {
     User save(User user);
     Optional<User> findByUid(String uid);
     List<User> findAll();
-    Optional<User> findById(Long id);  // ← 추가
 }
