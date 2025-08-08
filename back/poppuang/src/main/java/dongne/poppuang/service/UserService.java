@@ -1,5 +1,4 @@
 package dongne.poppuang.service;
-
 import dongne.poppuang.domain.EnumMajors;
 import dongne.poppuang.domain.Major;
 import dongne.poppuang.domain.RegisterDto;
