@@ -1,7 +1,10 @@
 package dongne.poppuang.service;
 
+import dongne.poppuang.domain.EnumMajors;
+import dongne.poppuang.domain.Major;
 import dongne.poppuang.domain.RegisterDto;
 import dongne.poppuang.domain.User;
+import dongne.poppuang.repository.MajorRepository;
 import dongne.poppuang.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,16 +42,6 @@ public class UserService {
         user.setCreated_at(new Timestamp(System.currentTimeMillis()));
 
         return userRepository.save(user);
-    }
-
-    // n분에 한번씩 실행되게 해야 함
-    @Transactional
-    public void applyClicks() {
-        for (User user : userRepository.findAll()) {
-            user.getMajor().setClicks(user.getMajor().getClicks() + user.getClicks());
-            userRepository.save(user);
-            user.setClicks(0L);
-        }
     }
 
     // 이 메서드 추가

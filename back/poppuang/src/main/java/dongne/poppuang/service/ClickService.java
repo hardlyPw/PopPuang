@@ -1,6 +1,7 @@
 package dongne.poppuang.service;
 
 import dongne.poppuang.domain.EnumMajors;
+import dongne.poppuang.domain.Major;
 import dongne.poppuang.domain.User;
 import dongne.poppuang.repository.MajorRepository;
 import dongne.poppuang.repository.UserRepository;
@@ -18,11 +19,14 @@ public class ClickService {
     public ClickService(UserRepository userRepository) { this.userRepository = userRepository; }
 
     @Transactional
-    public Long addClick(String id) {
+    public User addClick(String id) {
         Optional<User> user = userRepository.findById(Long.parseLong(id));
         // 유저가 존재하지 않는 경우 예외 처리 필요
 
-        return user.get().clickIncrement();
+        user.get().clickIncrement();
+        user.get().getMajor().clickIncrement();
+
+        return user.get();
     }
     
 }
