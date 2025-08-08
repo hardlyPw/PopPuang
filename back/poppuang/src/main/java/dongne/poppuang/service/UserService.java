@@ -1,7 +1,9 @@
 package dongne.poppuang.service;
 
+import dongne.poppuang.domain.Major;
 import dongne.poppuang.domain.RegisterDto;
 import dongne.poppuang.domain.User;
+import dongne.poppuang.repository.MajorRepository;
 import dongne.poppuang.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,13 +15,19 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    public UserService(UserRepository userRepository) { this.userRepository = userRepository; }
+    private final MajorRepository majorRepository;
+    public UserService(UserRepository userRepository, MajorRepository majorRepository) {
+        this.userRepository = userRepository;
+        this.majorRepository = majorRepository;
+    }
 
     @Transactional
     public User createUser(RegisterDto registerDto) {
         User user = new User();
         user.setUid(registerDto.getUsername());
-        user.setMajor(registerDto.getDepartment());
+        Major major = majorRepository.findByName(registerDto.getDepartment());
+        // user.setMajor(registerDto.getDepartment());
+        user.setMajor(major);
         user.setPw(registerDto.getPassword()); // 해시 아직 안함
         user.setCreated_at(new Timestamp(System.currentTimeMillis()));
 
