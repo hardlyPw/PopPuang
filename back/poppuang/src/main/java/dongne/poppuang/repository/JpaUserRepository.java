@@ -3,6 +3,7 @@ package dongne.poppuang.repository;
 import dongne.poppuang.domain.Major;
 import dongne.poppuang.domain.User;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
@@ -41,4 +42,15 @@ public class JpaUserRepository implements UserRepository {
     }
 
 
+    public Optional<String> findPwByUid(String uid) {
+        try {
+            String pw = em.createQuery(
+                            "SELECT u.pw FROM User u WHERE u.uid = :uid", String.class)
+                    .setParameter("uid", uid)
+                    .getSingleResult();
+            return Optional.of(pw);
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
+    }
 }

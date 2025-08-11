@@ -36,10 +36,4 @@ public class TestController {
 
         return "redirect:/";
     }
-
-    @GetMapping("/test2")
-    public String applyClicks() {
-        userService.applyClicks();
-        return "redirect:/";
-    }
 }

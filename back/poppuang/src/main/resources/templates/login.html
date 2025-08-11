@@ -11,7 +11,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: url('cau_logo.png') no-repeat center center;
+            background: url('/images/cau_logo.png') no-repeat center center;
             background-size: 150%;
             font-family: sans-serif;
         }
@@ -77,9 +77,9 @@
 <body>
 <div class="login-box">
     <h2>로그인</h2>
-    <form autocomplete="off">
+    <form th:action="@{/login}" autocomplete="off" method="post">
         <input type="text" name="username" placeholder="아이디" required />
-        <input id="password-login-input" type="password" name="password" placeholder="비밀번호" required />
+        <input type="password" name="password" placeholder="비밀번호" />
         <button type="submit">로그인</button>
     </form>
     <p class="message">

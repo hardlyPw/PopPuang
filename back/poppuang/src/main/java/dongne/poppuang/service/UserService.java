@@ -10,7 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class UserService {
@@ -21,6 +23,8 @@ public class UserService {
         this.majorRepository = majorRepository;
     }
 
+    private final Map<String,String> users = new ConcurrentHashMap<>();
+    
     @Transactional
     public User createUser(RegisterDto registerDto) {
         String uid = registerDto.getUsername();
@@ -45,10 +49,20 @@ public class UserService {
 
     // 이 메서드 추가
     @Transactional
-    public void incrementClicks(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found: " + userId));
-        user.setClicks(user.getClicks() + 1);
-        userRepository.save(user);  // JPA 영속성 컨텍스트가 관리 중이면 save() 없이도 flush 시 반영됩니다.
+    public Long incrementClicks(String uid) {
+        User user = userRepository.findByUid(uid)
+                .orElseThrow(() -> new IllegalArgumentException("User not found: " + uid));
+        return user.clickIncrement(); // JPA가 트랜잭션 끝날 때 자동 저장
+    }
+
+    public boolean authenticate(String username, String password) {
+        return userRepository.findPwByUid(username)
+                .map(storedPw -> storedPw.equals(password)) // 비번 비교
+                .orElse(false); // uid 없으면 false
+    }
+
+    // 테스트/디버깅용: 전체 사용자 보기 (운영금지)
+    public Map<String,String> getAllUsers() {
+        return users;
     }
 }
