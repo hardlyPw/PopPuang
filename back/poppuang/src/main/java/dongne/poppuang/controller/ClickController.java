@@ -14,7 +14,7 @@ public class ClickController {
     public ClickController(ClickService clickService) { this.clickService = clickService; }
 
     @PostMapping("/click")
-    public String click(HttpServletRequest request) {
+    public void click(HttpServletRequest request) {
         // 세션 검사
         HttpSession session = request.getSession(false); // 기존 세션 가져오기, 없으면 null 반환
         if (session != null && !session.isNew()) {
@@ -23,12 +23,10 @@ public class ClickController {
             if (username != null) {
                 // 사용자 ID가 저장되어 있는 경우 (로그인 상태)
                 clickService.addClick(username);
-                return "redirect:/";
             }
         } else {
             // 세션이 없거나 새로 생성된 세션인 경우 (로그아웃 상태)
-            return "login";
+            // 필요시 로직 추가
         }
-        return "login";
     }
 }
