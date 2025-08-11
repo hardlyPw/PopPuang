@@ -92,6 +92,9 @@
         .leaderboard li:last-child {
             border-bottom: none;
         }
+        .mymajor {
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -146,6 +149,12 @@
             sendClick();
         });
 
+        // 쿠키 파싱
+        function getCookie(name) {
+            const value = `; ${document.cookie}`; // 세미콜론으로 시작해 모든 쿠키 가져오기
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
 
         // 리더보드 불러오는 함수
         function loadLeaderboard() {
@@ -153,11 +162,28 @@
                 .then(res => res.json())
                 .then(data => {
                     const ul = document.querySelector('.leaderboard ul');
-                    ul.innerHTML = data
+
+                    // 내 학과 정보 (major 쿠키 사용)
+                    const myMajor = getCookie("major");
+                    const myData = data.find(item => item.major === myMajor);
+                    const myRankInfo
+                        = (typeof myMajor == "undefined") // 학과 쿠키 없는 경우
+                        ? `<li class="mymajor"><span> </span> <span>로그인 후 이용 가능</span> <span> </span></li>`
+                        : `<li class="mymajor"><span>나의 학과</span> <span>${myMajor}</span> <span>${myData.clicks}</span></li>`;
+
+                    // 나머지 리더보드
+                    data.sort((a, b) => b.clicks - a.clicks)
+                    const leaderboardItems = data
                         .map((item, i) =>
                             `<li><span>${i + 1}위</span> <span>${item.major}</span> <span>${item.clicks}</span></li>`
                         )
                         .join('');
+
+                    // 위에 원하는 항목 추가 후 innerHTML 설정
+                    ul.innerHTML = `
+                ${myRankInfo}
+                ${leaderboardItems}
+            `;
                 })
                 .catch(err => console.error('리더보드 로딩 실패:', err));
         }

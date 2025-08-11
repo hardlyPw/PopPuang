@@ -38,8 +38,9 @@ public class AuthController {
 
     // 로그아웃 예시
     @GetMapping("/logout")
-    public String logout(HttpSession session) {
+    public String logout(HttpSession session, Model model) {
         session.invalidate();
+        model.addAttribute("isLoggedIn", false);
         return "redirect:/login";
     }
 }
