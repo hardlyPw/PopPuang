@@ -11,7 +11,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: url('cau_logo.png') no-repeat center center;
+            background: url('/images/cau_logo.png') no-repeat center center;
             background-size: 150%;
             font-family: sans-serif;
         }
@@ -108,6 +108,11 @@
         }
 
 
+        input[readonly] {
+            background-color: white !important; /* 배경색을 강제로 흰색으로 */
+            cursor: pointer; /* 마우스 커서를 클릭 가능 모양으로 */
+        }
+
     </style>
 </head>
 <body>
@@ -117,7 +122,7 @@
         <input type="text" name="username" placeholder="아이디" required />
 
         <div class="autocomplete">
-            <input id="department-input" type="text" name="department" placeholder="학과 검색" required />
+            <input id="department-input" type="text" name="department" placeholder="학과 선택 (클릭)" required readonly>
         </div>
 
         <input id="password" type="password" name="password" placeholder="비밀번호" required />
@@ -132,6 +137,14 @@
         <a th:href="@{/login}">로그인</a>
     </p>
 </div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const departments = /*[[${majors.![name]}]]*/ [];
+    /*]]>*/
+</script>
+
+
 
 <script>
     // 비밀번호 확인 기능
@@ -191,7 +204,6 @@
                 }
             }
         }
-        inp.addEventListener("input", showList);
         inp.addEventListener("focus", showList);
 
         function closeAllLists(elmnt) {
@@ -207,9 +219,7 @@
         });
     }
     // 자동완성 학과 목록
-    const departments = ["간호학과", "건설환경플랜트공학과", "건축학부", "경영학부", "경제학부", "공공인재학부", "광고홍보학과", "교육학과", "국어국문학과", "국제물류학과", "기계공학부",
-        "도시계획·부동산학과", "도시시스템공학과", "미디어커뮤니케이션학부", "물리학과", "문헌정보학과", "산업보안학과", "사회복지학부", "생명과학과", "소프트웨어학부", "수학과", "심리학과", "아시아문화학부",
-        "약학부", "에너지시스템공학부", "역사학과", "영어교육과", "영어영문학과", "유아교육과", "유럽문화학부","융합공학부", "응용통계학과", "의학부","전기전자공학부", "지식경영학부", "정치국제학과","차세대반도체학과", "철학과", "체육교육과", "화학과", "AI학과"];
+
     autocomplete(document.getElementById("department-input"), departments);
 </script>
 
