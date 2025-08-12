@@ -1,5 +1,7 @@
 package dongne.poppuang.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import dongne.poppuang.domain.Major;
 import dongne.poppuang.repository.JpaMajorRepository;
 import org.springframework.stereotype.Controller;
@@ -20,11 +22,22 @@ public class HomeController {
     }
 
     @GetMapping("/")
-    public String home(Model model) {
-        model.addAttribute("time", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+    public String home(Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession(false); // 기존 세션 가져오기, 없으면 null 반환
+        if (session != null && !session.isNew()) {
+            // 세션이 존재하고 새로 생성된 세션이 아닌 경우 (로그인 상태)
+            String username = (String) session.getAttribute("username");
+            if (username != null) {
+                // 사용자 ID가 저장되어 있는 경우 (로그인 상태)
+                model.addAttribute("isLoggedIn", true);
+            }
+        } else {
+            // 세션이 없거나 새로 생성된 세션인 경우 (로그아웃 상태)
+            model.addAttribute("isLoggedIn", false);
+        }
         return "home";
     }
-    
+
     @GetMapping("/register")
     public String signup(Model model) {
         List<Major> majors = jpaMajorRepository.findAll();

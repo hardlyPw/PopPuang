@@ -25,6 +25,7 @@ public class TestController {
 
         User testUser = userService.createUser(testDto);
         String id = testUser.getId().toString();
+        String major_id = testUser.getMajor().getName();
 
         // 쿠키 생성
         Cookie cookie = new Cookie("id", id);
@@ -33,6 +34,13 @@ public class TestController {
         cookie.setMaxAge(60);
         cookie.setSecure(true);
         response.addCookie(cookie);
+
+        Cookie cookie2 = new Cookie("major", major_id);
+        cookie2.setDomain("localhost");
+        cookie2.setPath("/");
+        cookie2.setMaxAge(60);
+        cookie2.setSecure(true);
+        response.addCookie(cookie2);
 
         return "redirect:/";
     }

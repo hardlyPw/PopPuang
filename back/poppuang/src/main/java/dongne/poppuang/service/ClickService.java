@@ -19,8 +19,8 @@ public class ClickService {
     public ClickService(UserRepository userRepository) { this.userRepository = userRepository; }
 
     @Transactional
-    public User addClick(String id) {
-        Optional<User> user = userRepository.findById(Long.parseLong(id));
+    public User addClick(String username) {
+        Optional<User> user = userRepository.findByUid(username);
         // 유저가 존재하지 않는 경우 예외 처리 필요
 
         user.get().clickIncrement();

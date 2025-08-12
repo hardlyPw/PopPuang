@@ -30,7 +30,8 @@ public class LeaderboardService {
         }
 
         // 정렬 함수, 대충 인터넷에서 찾아봄, 실행 시간 너무 김
-        Collections.sort(list, (o1,o2) -> Math.toIntExact(o2.getClicks() - o1.getClicks()));
+        // + JS로 정렬 가능, 따라서 안써도 됨
+        // Collections.sort(list, (o1,o2) -> Math.toIntExact(o2.getClicks() - o1.getClicks()));
 
         return list;
     }

@@ -56,9 +56,13 @@ public class UserService {
     }
 
     public boolean authenticate(String username, String password) {
-        return userRepository.findPwByUid(username)
+        return userRepository.findPwByUid(username) // userRepository.findByUid.get().getPw()로 비번 찾기 가능 -지성
                 .map(storedPw -> storedPw.equals(password)) // 비번 비교
                 .orElse(false); // uid 없으면 false
+    }
+
+    public String getMajor(String username) {
+        return userRepository.findByUid(username).get().getMajor().getName();
     }
 
     // 테스트/디버깅용: 전체 사용자 보기 (운영금지)
