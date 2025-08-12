@@ -94,24 +94,29 @@
         }
 
         /* 비밀번호 확인 메시지(디자인) */
-        #password-message {
+        /* 기존 코드 */
+        #password-message, #department-message {
             font-size: 13px;
             margin-top: -5px;
+            margin-bottom: 5px;
             text-align: left;
             height: 15px;
         }
-        .success {
-            color: green;
+
+        /* 수정 후 코드 */
+        #form-message {
+            font-size: 13px;
+            margin-top: 10px; /* 버튼과의 간격 조정 */
+            margin-bottom: 5px;
+            text-align: center; /* 중앙 정렬이 더 보기 좋을 수 있습니다. */
+            min-height: 15px; /* 내용이 없을 때도 최소 높이 유지 */
+            color: red; /* .error 클래스 대신 직접 지정해도 됩니다. */
+            line-height: 1.4; /* 여러 줄일 때 줄 간격 */
         }
         .error {
             color: red;
         }
 
-
-        input[readonly] {
-            background-color: white !important; /* 배경색을 강제로 흰색으로 */
-            cursor: pointer; /* 마우스 커서를 클릭 가능 모양으로 */
-        }
 
     </style>
 </head>
@@ -122,13 +127,14 @@
         <input type="text" name="username" placeholder="아이디" required />
 
         <div class="autocomplete">
-            <input id="department-input" type="text" name="department" placeholder="학과 선택 (클릭)" required readonly>
+            <input id="department-input" type="text" placeholder="학과 검색" required />
         </div>
+        <input type="hidden" id="department-hidden-input" name="department" />
 
         <input id="password" type="password" name="password" placeholder="비밀번호" required />
         <input id="password-confirm" type="password" name="password_confirm" placeholder="비밀번호 확인" required />
 
-        <p id="password-message"></p>
+        <p id="form-message" class="error"></p>
 
         <button type="submit">회원가입</button>
     </form>
@@ -147,64 +153,49 @@
 
 
 <script>
-    // 비밀번호 확인 기능
+    // 자동완성 기능은 그대로 유지됩니다.
+    // === 필요한 DOM 요소 가져오기 ===
+    const departmentSearchInput = document.getElementById('department-input');
+    const departmentHiddenInput = document.getElementById('department-hidden-input');
     const pwInput = document.getElementById('password');
     const pwConfirmInput = document.getElementById('password-confirm');
-    const messageElement = document.getElementById('password-message');
+    const signupForm = document.querySelector('form');
+    const formMessage = document.getElementById('form-message'); // 통합 메시지 요소
 
-    function checkPassword() {
-        const pw1 = pwInput.value;
-        const pw2 = pwConfirmInput.value;
-
-        if (pw2 === "") {
-            messageElement.textContent = "";
-            return;
-        }
-
-        if (pw1 === pw2) {
-            messageElement.textContent = "비밀번호가 일치합니다.";
-            messageElement.className = "success";
-        } else {
-            messageElement.textContent = "비밀번호가 일치하지 않습니다.";
-            messageElement.className = "error";
-        }
-    }
-    pwInput.addEventListener('keyup', checkPassword);
-    pwConfirmInput.addEventListener('keyup', checkPassword);
-
-
-    //학과 자동완성 기능
+    // === 학과 자동완성 기능 (기존과 거의 동일) ===
     function autocomplete(inp, arr) {
+        // 실시간 입력 이벤트는 목록 필터링 용도로만 사용
+        inp.addEventListener("input", showList);
+        inp.addEventListener("focus", showList);
+
         function showList() {
             let a, b, i, val = inp.value;
             closeAllLists();
-
             a = document.createElement("DIV");
             a.setAttribute("id", inp.id + "autocomplete-list");
             a.setAttribute("class", "autocomplete-items");
             inp.parentNode.appendChild(a);
-
             for (i = 0; i < arr.length; i++) {
                 if (!val || arr[i].toUpperCase().startsWith(val.toUpperCase())) {
                     b = document.createElement("DIV");
-
-                    if(val){
+                    if (val) {
                         b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
                         b.innerHTML += arr[i].substr(val.length);
                     } else {
                         b.innerHTML = arr[i];
                     }
-
                     b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-                    b.addEventListener("click", function(e) {
-                        inp.value = this.getElementsByTagName("input")[0].value;
+                    b.addEventListener("click", function (e) {
+                        const selectedValue = this.getElementsByTagName("input")[0].value;
+                        inp.value = selectedValue;
+                        departmentHiddenInput.value = selectedValue; // 숨겨진 input에 값 저장
+                        formMessage.textContent = ""; // 메시지 초기화
                         closeAllLists();
                     });
                     a.appendChild(b);
                 }
             }
         }
-        inp.addEventListener("focus", showList);
 
         function closeAllLists(elmnt) {
             const x = document.getElementsByClassName("autocomplete-items");
@@ -218,9 +209,44 @@
             closeAllLists(e.target);
         });
     }
-    // 자동완성 학과 목록
 
-    autocomplete(document.getElementById("department-input"), departments);
+    // 자동완성 함수 호출
+    autocomplete(departmentSearchInput, departments);
+
+    // 학과 검색창에 입력 시 숨겨진 값 초기화 (유효성 검사를 위해 필요)
+    departmentSearchInput.addEventListener('input', () => {
+        departmentHiddenInput.value = "";
+    });
+
+
+    // === 폼 제출 시 모든 유효성 검사를 한 번에 처리 ===
+    signupForm.addEventListener('submit', function(event) {
+        // 1. 오류 메시지들을 담을 배열 생성
+        const errors = [];
+
+        // 2. 기존 메시지 초기화
+        formMessage.textContent = "";
+
+        // 3. 유효성 검사 시작
+        // 검사 1: 비밀번호 일치 여부
+        if (pwInput.value !== pwConfirmInput.value) {
+            errors.push("비밀번호가 일치하지 않습니다.");
+        }
+
+        // 검사 2: 학과 선택 여부
+        if (departmentHiddenInput.value === "") {
+            errors.push("목록에 있는 학과를 선택해주세요.");
+        }
+
+        // (여기에 다른 검사들을 추가할 수 있습니다. e.g. 비밀번호 길이, 아이디 형식 등)
+
+
+        // 4. 오류가 하나라도 있으면 폼 제출을 막고, 통합 메시지 출력
+        if (errors.length > 0) {
+            event.preventDefault(); // 폼 제출 막기
+            formMessage.innerHTML = errors.join('<br>'); // 오류 메시지들을 줄바꿈으로 합쳐서 출력
+        }
+    });
 </script>
 
 </body>
