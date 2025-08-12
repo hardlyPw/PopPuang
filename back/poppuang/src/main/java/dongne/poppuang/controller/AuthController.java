@@ -26,6 +26,16 @@ public class AuthController {
 
 
     @PostMapping("/login")
+<<<<<<< HEAD
+    public String loginSubmit(LoginDto loginDto,
+                              HttpSession session,
+                              Model model) {
+        if (userService.authenticate(loginDto.getUsername(), loginDto.getPassword())) {
+            session.setAttribute("username", loginDto.getUsername());
+            // 테스트용 비번 저장은 나중에 지우는 게 안전
+            System.out.println("성공");
+            return "redirect:/";
+=======
     public String loginSubmit(String username, String password,
                               HttpSession session, HttpServletResponse response, Model model) {
         if (userService.authenticate(username, password)) {
@@ -41,12 +51,13 @@ public class AuthController {
             model.addAttribute("isLoggedIn", true);
 
             return "home";
+>>>>>>> main
         } else {
             model.addAttribute("error", "아이디 또는 비밀번호가 잘못되었습니다.");
+            System.out.println("실패");
             return "login";
         }
     }
-
 
     // 로그아웃 예시
     @GetMapping("/logout")

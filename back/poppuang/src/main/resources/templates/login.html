@@ -80,15 +80,6 @@
     <form th:action="@{/login}" autocomplete="off" method="post">
         <input type="text" name="username" placeholder="아이디" required />
         <input type="password" name="password" placeholder="비밀번호" />
-
-
-        <!-- 에러 메시지 영역 추가 -->
-        <div th:if="${error}"
-             th:text="${error}"
-             style="color: red; margin: 5px 0 15px 0; font-size: 14px;">
-        </div>
-
-
         <button type="submit">로그인</button>
     </form>
     <p class="message">
