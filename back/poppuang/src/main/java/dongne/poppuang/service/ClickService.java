@@ -19,14 +19,14 @@ public class ClickService {
     public ClickService(UserRepository userRepository) { this.userRepository = userRepository; }
 
     @Transactional
-    public User addClick(String username) {
-        Optional<User> user = userRepository.findByUid(username);
+    public User addClick(String id) {
         // 유저가 존재하지 않는 경우 예외 처리 필요
+        User user = userRepository.findById(Long.parseLong(id))
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저는 존재하지 않습니다"));
+        user.clickIncrement();
+        user.getMajor().clickIncrement();
 
-        user.get().clickIncrement();
-        user.get().getMajor().clickIncrement();
-
-        return user.get();
+        return user;
     }
     
 }

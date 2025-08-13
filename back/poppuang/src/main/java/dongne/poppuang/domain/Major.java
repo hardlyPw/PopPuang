@@ -19,7 +19,7 @@ public class Major {
     private String name;
 
     @Column(nullable = false)
-    private Long clicks;
+    private Long clicks=0L; //
 
     public Long clickIncrement() {
         return ++(this.clicks);
