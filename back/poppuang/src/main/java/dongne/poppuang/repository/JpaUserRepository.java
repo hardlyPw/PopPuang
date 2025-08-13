@@ -30,11 +30,16 @@ public class JpaUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findByUid(String uid) {
-        List<User> result = em.createQuery("SELECT u FROM User u WHERE u.uid = :uid", User.class)
-                .setParameter("uid", uid)
-                .getResultList();
-        return result.stream().findAny();
+        try{
+            User result = em.createQuery("SELECT u FROM User u WHERE u.uid = :uid", User.class)
+                    .setParameter("uid", uid)
+                    .getSingleResult();
+            return Optional.of(result);
+        }catch (NoResultException e){
+            return Optional.empty();
+        }
     }
+
 
     @Override
     public List<User> findAll() {

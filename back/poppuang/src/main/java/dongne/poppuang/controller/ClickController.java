@@ -1,5 +1,6 @@
 package dongne.poppuang.controller;
 
+import dongne.poppuang.domain.LoginedUserDto;
 import dongne.poppuang.service.ClickService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -19,11 +20,8 @@ public class ClickController {
         HttpSession session = request.getSession(false); // 기존 세션 가져오기, 없으면 null 반환
         if (session != null && !session.isNew()) {
             // 세션이 존재하고 새로 생성된 세션이 아닌 경우 (로그인 상태)
-            String username = (String) session.getAttribute("username");
-            if (username != null) {
-                // 사용자 ID가 저장되어 있는 경우 (로그인 상태)
-                clickService.addClick(username);
-            }
+            LoginedUserDto loginedUser = (LoginedUserDto) session.getAttribute("loginedUser");
+            clickService.addClick(loginedUser.getUid());
         } else {
             // 세션이 없거나 새로 생성된 세션인 경우 (로그아웃 상태)
             // 필요시 로직 추가

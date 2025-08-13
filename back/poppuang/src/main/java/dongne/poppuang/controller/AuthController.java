@@ -1,18 +1,14 @@
 package dongne.poppuang.controller;
 
-import dongne.poppuang.domain.LoginDto;
+import dongne.poppuang.domain.LoginedUserDto;
+import dongne.poppuang.domain.User;
 import dongne.poppuang.service.UserService;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpSession;
-
-import java.util.Arrays;
 
 @Controller
 public class AuthController {
@@ -26,37 +22,36 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public String loginSubmit(String username, String password,
-                              HttpSession session, HttpServletResponse response, Model model) {
-        if (userService.authenticate(username, password)) {
-            session.setAttribute("username", username);
+    public String loginSubmit(String uid, String password,
+                              HttpSession session, Model model) { // HttpServletResponse는 이제 필요 없으므로 삭제
 
-            Cookie major_cookie = new Cookie("major", userService.getMajor(username));
-            major_cookie.setDomain("localhost");
-            major_cookie.setPath("/");
-            major_cookie.setMaxAge(60*30);
-            major_cookie.setSecure(true);
-            response.addCookie(major_cookie);
+        User loginUser = userService.login(uid, password);
+        if (loginUser != null) {
+            // 3. ⭐ 핵심: 로그인에 성공한 User 객체를 LoginedUserDto로 변환합니다.
+            LoginedUserDto loginedUser = new LoginedUserDto(loginUser);
 
-            model.addAttribute("isLoggedIn", true);
+            // 4. ⭐ 핵심: 변환된 DTO 객체를 세션에 저장합니다.
+            //    이제 여러 정보를 각각 저장할 필요 없이, 이 객체 하나만 저장하면 됩니다.
+            session.setAttribute("loginedUser", loginedUser); // "loginedUser"라는 이름으로 저장
 
-            return "home";
+            return "redirect:/"; // 메인 페이지로 리다이렉트
 
         } else {
+            // 로그인 실패 시
             model.addAttribute("error", "아이디 또는 비밀번호가 잘못되었습니다.");
-            System.out.println("실패");
             return "login";
         }
     }
 
-    // 로그아웃 예시
+
     @GetMapping("/logout")
-    public String logout(HttpSession session, HttpServletResponse response, Model model) {
-        session.invalidate();
-        Cookie major_cookie = new Cookie("major", null);
-        major_cookie.setMaxAge(0);
-        response.addCookie(major_cookie);
-        model.addAttribute("isLoggedIn", false);
-        return "login";
+    public String logout(HttpSession session) { // HttpServletResponse, Model 파라미터 삭제
+        session.invalidate(); // 세션만 무효화하면 됩니다.
+
+        // ✅ [삭제] 쿠키 삭제 로직은 더 이상 필요 없으므로 삭제합니다.
+        // Cookie major_cookie = new Cookie(...);
+        // response.addCookie(major_cookie);
+
+        return "redirect:/login"; // 로그아웃 후 로그인 페이지로 리다이렉트
     }
 }

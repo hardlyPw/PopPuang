@@ -164,6 +164,14 @@
         />
     </div>
 
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        // 컨트롤러의 Model에서 myMajor 값을 JavaScript 변수로 가져옵니다.
+        // 로그인하지 않았을 경우 myMajor는 null이 됩니다.
+        const myMajor = /*[[${myMajor != null ? myMajor.name : null}]]*/ null;
+        /*]]>*/
+    </script>
+
     <script>
         // 토글 상태 관리 변수
         let isOpen = false;
@@ -184,12 +192,6 @@
             sendClick();
         });
 
-        // 쿠키 파싱
-        function getCookie(name) {
-            const value = `; ${document.cookie}`; // 세미콜론으로 시작해 모든 쿠키 가져오기
-            const parts = value.split(`; ${name}=`);
-            if (parts.length === 2) return parts.pop().split(';').shift();
-        }
 
         // 리더보드 불러오는 함수
         function loadLeaderboard() {
@@ -198,15 +200,17 @@
                 .then(data => {
                     const ul = document.querySelector('.leaderboard ul');
 
-                    // 내 학과 정보 (major 쿠키 사용)
-                    const myMajor = getCookie("major");
-                    const myData = data.find(item => item.major === myMajor);
-                    const myRankInfo
-                        = (typeof myMajor == "undefined") // 학과 쿠키 없는 경우
-                        ? `<li class="mymajor"><span> </span> <span>로그인 후 이용 가능</span> <span> </span></li>`
-                        : `<li class="mymajor"><span>나의 학과</span> <span>${myMajor}</span> <span>${myData.clicks}</span></li>`;
+                    // ✅ [수정] 쿠키 대신 위에서 선언한 myMajor 변수 사용
+                    // const myMajor = getCookie("major"); // 이 줄 삭제
 
-                    // 나머지 리더보드
+                    const myData = myMajor ? data.find(item => item.major === myMajor) : null;
+                    const myRankInfo
+                        = !myMajor // myMajor 변수가 null이거나 없을 때
+                        ? `<li class="mymajor"><span> </span> <span>로그인 후 이용 가능</span> <span> </span></li>`
+                        : `<li class="mymajor"><span>나의 학과</span> <span>${myMajor}</span> <span>${myData ? myData.clicks : 0}</span></li>`;
+                    // myData가 없을 경우를 대비하여 ${myData.clicks} 대신 ${myData ? myData.clicks : 0}으로 안전하게 수정
+
+                    // 나머지 리더보드 로직은 그대로
                     data.sort((a, b) => b.clicks - a.clicks)
                     const leaderboardItems = data
                         .map((item, i) =>
@@ -214,11 +218,10 @@
                         )
                         .join('');
 
-                    // 위에 원하는 항목 추가 후 innerHTML 설정
                     ul.innerHTML = `
-                ${myRankInfo}
-                ${leaderboardItems}
-            `;
+                        ${myRankInfo}
+                        ${leaderboardItems}
+                    `;
                 })
                 .catch(err => console.error('리더보드 로딩 실패:', err));
         }

@@ -19,9 +19,9 @@ public class ClickService {
     public ClickService(UserRepository userRepository) { this.userRepository = userRepository; }
 
     @Transactional
-    public User addClick(String id) {
+    public User addClick(String uid) {
         // 유저가 존재하지 않는 경우 예외 처리 필요
-        User user = userRepository.findById(Long.parseLong(id))
+        User user = userRepository.findByUid(uid)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저는 존재하지 않습니다"));
         user.clickIncrement();
         user.getMajor().clickIncrement();

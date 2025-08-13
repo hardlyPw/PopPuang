@@ -1,5 +1,6 @@
 package dongne.poppuang.controller;
 
+import dongne.poppuang.domain.LoginedUserDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import dongne.poppuang.domain.Major;
@@ -23,17 +24,19 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model, HttpServletRequest request) {
-        HttpSession session = request.getSession(false); // 기존 세션 가져오기, 없으면 null 반환
-        if (session != null && !session.isNew()) {
-            // 세션이 존재하고 새로 생성된 세션이 아닌 경우 (로그인 상태)
-            String username = (String) session.getAttribute("username");
-            if (username != null) {
-                // 사용자 ID가 저장되어 있는 경우 (로그인 상태)
-                model.addAttribute("isLoggedIn", true);
-            }
+        HttpSession session = request.getSession(false);
+        if (session != null && session.getAttribute("LoginedUser") != null) {
+            // 로그인 상태일 때
+            LoginedUserDto loginedUser = (LoginedUserDto) session.getAttribute("loginedUser");
+            model.addAttribute("isLoggedIn", true);
+
+            //DTO에서 직접 major 뽑아올 수 있음
+            model.addAttribute("myMajor", loginedUser.getMajor());
+
         } else {
-            // 세션이 없거나 새로 생성된 세션인 경우 (로그아웃 상태)
+            // 로그아웃 상태일 때
             model.addAttribute("isLoggedIn", false);
+            model.addAttribute("myMajor", null); // ✅ 이 한 줄을 추가해주세요.
         }
         return "home";
     }
