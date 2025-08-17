@@ -25,13 +25,13 @@ public class HomeController {
     @GetMapping("/")
     public String home(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if (session != null && session.getAttribute("LoginedUser") != null) {
+        if (session != null && session.getAttribute("loginedUser") != null) {
             // 로그인 상태일 때
             LoginedUserDto loginedUser = (LoginedUserDto) session.getAttribute("loginedUser");
             model.addAttribute("isLoggedIn", true);
 
             //DTO에서 직접 major 뽑아올 수 있음
-            model.addAttribute("myMajor", loginedUser.getMajor());
+            model.addAttribute("myMajor", loginedUser.getMajor().getName());
 
         } else {
             // 로그아웃 상태일 때
