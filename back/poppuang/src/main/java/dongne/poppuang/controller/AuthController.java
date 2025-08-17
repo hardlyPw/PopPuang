@@ -45,14 +45,8 @@ public class AuthController {
 
 
     @GetMapping("/logout")
-    public String logout(HttpSession session, Model model) { // HttpServletResponse, Model 파라미터 삭제
+    public String logout(HttpSession session) { // HttpServletResponse, Model 파라미터 삭제
         session.invalidate(); // 세션만 무효화하면 됩니다.
-        model.addAttribute("isLoggedIn", false);
-        model.addAttribute("major", false);
-
-        // ✅ [삭제] 쿠키 삭제 로직은 더 이상 필요 없으므로 삭제합니다.
-        // Cookie major_cookie = new Cookie(...);
-        // response.addCookie(major_cookie);
 
         return "redirect:/login"; // 로그아웃 후 로그인 페이지로 리다이렉트
     }
