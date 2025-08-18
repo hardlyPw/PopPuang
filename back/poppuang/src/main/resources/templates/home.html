@@ -28,7 +28,7 @@
             height: 100%;
 
             /* 기존 background 속성들을 이쪽으로 이동 */
-            background-image: url('/images/software_logo.jpg');
+
             background-repeat: no-repeat;
             background-size: 800px auto;
 
@@ -43,6 +43,11 @@
 
             /* ✅ 일부 브라우저에서 깜빡임 방지를 위한 트릭 */
             transform: scale(1.1);
+
+            /* ✅ 부드러운 이미지 전환 효과 */
+            transition: background-image 0.5s ease-in-out;
+
+            background-image: var(--bg-image);
         }
 
         .header {
@@ -196,111 +201,172 @@
     <audio id="clickSound" src="/sound/pop.mp3" preload="auto"></audio>
 
     <script>
-        const puangImg = document.getElementById('puangImg');
-        const clickSound = document.getElementById('clickSound');
-        const clickCountEl = document.getElementById('clickCount');
-        let revertTimer = null;
 
-        // 볼륨 (0.0~1.0)
-        clickSound.volume = 0.9;
+    // 학과 로고 이미지 경로
+    const majorImages = {
+    '간호학과': '/images/major_logo/nursing_logo.jpg',
+    '건설환경플랜트공학과': '/images/major_logo/civil_logo.jpg',
+    '건축학부': '/images/major_logo/architecture_logo.jpg',
+    '경영학부': '/images/major_logo/business_administration_logo.jpg',
+    '경제학부': '/images/major_logo/economics_logo.jpg',
+    '공공인재학부': '/images/major_logo/public_service_logo.jpg',
+    '광고홍보학과': '/images/major_logo/advertising_logo.jpg',
+    '교육학과': '/images/major_logo/education_logo.jpg',
+    '국어국문학과': '/images/major_logo/korean_language_literature_logo.jpg',
+    '국제물류학과': '/images/major_logo/international_logistics_logo.jpg',
+    '기계공학부': '/images/major_logo/mechanical_logo.jpg',
+    '도시계획_부동산학과': '/images/major_logo/urban_planning_real_estate_logo.jpg',
+    '도시시스템공학과': '/images/major_logo/urban_design_studles_logo.jpg',
+    '미디어커뮤니케이션학부': '/images/major_logo/media_communication_logo.jpg',
+    '물리학과': '/images/major_logo/physics_logo.jpg',
+    '문헌정보학과': '/images/major_logo/library_information_logo.jpg',
+    '산업보안학과': '/images/major_logo/industrial_security_logo.jpg',
+    '사회복지학부': '/images/major_logo/social_welfare_logo.jpg',
+    '생명과학과': '/images/major_logo/life_science.jpg',
+    '소프트웨어학부': '/images/major_logo/software_logo.jpg',
+    '수학과': '/images/major_logo/mathematics_logo.jpg',
+    '심리학과': '/images/major_logo/psychology_logo.jpg',
+    '아시아문화학부': '/images/major_logo/asian_culture_logo.jpg',
+    '약학부': '/images/major_logo/pharmacy_logo.jpg',
+    '에너지시스템공학부': '/images/major_logo/energy_systems_logo.jpg',
+    '역사학과': '/images/major_logo/history_logo.jpg',
+    '영어교육과': '/images/major_logo/english_education_logo.jpg',
+    '영어영문학과': '/images/major_logo/english_language_literature_logo.jpg',
+    '유아교육과': '/images/major_logo/childhood_education_logo.jpg',
+    '유럽문화학부': '/images/major_logo/european_culture_logo.jpg',
+    '융합공학부': '/images/major_logo/integrative_engineering_logo.jpg',
+    '응용통계학과': '/images/major_logo/applied_statistics_logo.jpg',
+    '의학부': '/images/major_logo/medicine_logo.jpg',
+    '전기전자공학부': '/images/major_logo/electrical_electronic_logo.png',
+    '지식경영학부': '/images/major_logo/global_knowledge_management_logo.png',
+    '정치국제학과': '/images/major_logo/political_science_international_relations_logo.jpg',
+    '차세대반도체학과': '/images/major_logo/next_generation_semiconductor_logo.png',
+    '철학과': '/images/major_logo/philosophy_logo.jpg',
+    '체육교육과': '/images/major_logo/physical_education_logo.jpg',
+    '화학과': '/images/major_logo/chemistry_logo.jpg',
+    'AI학과': '/images/major_logo/ai_logo.jpg'
+    }
 
-        // 카운트 유틸
-        function setCount(n) {
-            clickCountEl.textContent = Number.isFinite(n) ? n : 0;
-        }
-        function incCount() {
-            const cur = parseInt(clickCountEl.textContent || '0', 10) || 0;
-            setCount(cur + 1);
-        }
+    const puangImg = document.getElementById('puangImg');
+    const clickSound = document.getElementById('clickSound');
+    const clickCountEl = document.getElementById('clickCount');
+    let revertTimer = null;
 
-        puangImg.addEventListener('click', () => {
-            // 사운드 재생 (사용자 제스처이므로 대부분 브라우저에서 허용)
-            try {
-                clickSound.currentTime = 0;
-                clickSound.play().catch(() => {});
-            } catch (_) {}
+    // 볼륨 (0.0~1.0)
+    clickSound.volume = 0.9;
 
-            // 이미지 열림 + 팝 애니메이션
+    // 카운트 유틸
+    function setCount(n) {
+        clickCountEl.textContent = Number.isFinite(n) ? n : 0;
+    }
+    function incCount() {
+        const cur = parseInt(clickCountEl.textContent || '0', 10) || 0;
+        setCount(cur + 1);
+    }
+
+    puangImg.addEventListener('click', () => {
+        // 사운드 재생 (사용자 제스처이므로 대부분 브라우저에서 허용)
+        try {
+            clickSound.currentTime = 0;
+            clickSound.play().catch(() => {});
+        } catch (_) {}
+
+        // 이미지 열림 + 팝 애니메이션
+        puangImg.classList.remove('pop');
+        puangImg.src = '/images/poppuang-open.png';
+        // 애니메이션 재시작 트릭
+        // eslint-disable-next-line no-unused-expressions
+        puangImg.offsetWidth;
+        puangImg.classList.add('pop');
+
+        // 자동 닫힘
+        if (revertTimer) clearTimeout(revertTimer);
+        revertTimer = setTimeout(() => {
+            puangImg.src = '/images/poppuang-closed.png';
             puangImg.classList.remove('pop');
-            puangImg.src = '/images/poppuang-open.png';
-            // 애니메이션 재시작 트릭
-            // eslint-disable-next-line no-unused-expressions
-            puangImg.offsetWidth;
-            puangImg.classList.add('pop');
+        }, 200);
 
-            // 자동 닫힘
-            if (revertTimer) clearTimeout(revertTimer);
-            revertTimer = setTimeout(() => {
-                puangImg.src = '/images/poppuang-closed.png';
-                puangImg.classList.remove('pop');
-            }, 200);
-
-            // 클릭 카운트 처리 (서버 응답에 clicks 있으면 사용, 없으면 +1)
-            fetch('/click', { method: 'POST' })
-                .then(async (res) => {
-                    try {
-                        const data = await res.json();
-                        if (data && typeof data.clicks === 'number') {
-                            setCount(data.clicks);
-                        } else {
-                            incCount();
-                        }
-                    } catch (e) {
+        // 클릭 카운트 처리 (서버 응답에 clicks 있으면 사용, 없으면 +1)
+        fetch('/click', { method: 'POST' })
+            .then(async (res) => {
+                try {
+                    const data = await res.json();
+                    if (data && typeof data.clicks === 'number') {
+                        setCount(data.clicks);
+                    } else {
                         incCount();
                     }
-                })
-                .then(() => loadLeaderboard())
-                .catch(err => {
-                    console.error(err);
+                } catch (e) {
                     incCount();
-                });
-        });
+                }
+            })
+            .then(() => loadLeaderboard())
+            .catch(err => {
+                console.error(err);
+                incCount();
+            });
+    });
 
+    // 배경 학과 이미지 변경 함수
+function setTopMajorBackground(topMajor) {
+    if (topMajor && majorImages[topMajor]) {
+        document.body.style.setProperty('--bg-image', `url('${majorImages[topMajor]}')`);
+    } else {
+        document.body.style.setProperty('--bg-image', `url('/images/major_logo/software_logo.jpg')`);
+    }
+}
 
-        // 리더보드 불러오는 함수
-        function loadLeaderboard() {
-            fetch('/leaderboard')
-                .then(res => res.json())
-                .then(data => {
-                    const ul = document.querySelector('.leaderboard ul');
+    // 리더보드 불러오는 함수
+    // 배경 학과 이미지 변경 기능 추가
+    function loadLeaderboard() {
+        fetch('/leaderboard')
+            .then(res => res.json())
+            .then(data => {
+                const ul = document.querySelector('.leaderboard ul');
 
-                    let myMajor = "[[${myMajor}]]";
-                    const myData = myMajor ? data.find(item => item.major === myMajor) : null;
-                    const myRankInfo
-                        = !myMajor // myMajor 변수가 null이거나 없을 때
-                        ? `<li class="mymajor"><span> </span> <span>로그인 후 이용 가능</span> <span> </span></li>`
-                        : `<li class="mymajor"><span>나의 학과</span> <span>${myMajor}</span> <span>${myData ? myData.clicks : 0}</span></li>`;
-                    // myData가 없을 경우를 대비하여 ${myData.clicks} 대신 ${myData ? myData.clicks : 0}으로 안전하게 수정
-                    // 나머지 리더보드
-                    data.sort((a, b) => b.clicks - a.clicks)
-                    const leaderboardItems = data
-                        .map((item, i) =>
-                            `<li><span>${i + 1}위</span> <span>${item.major}</span> <span>${item.clicks}</span></li>`
-                        )
-                        .join('');
+                let myMajor = "[[${myMajor}]]";
+                const myData = myMajor ? data.find(item => item.major === myMajor) : null;
+                const myRankInfo
+                    = !myMajor // myMajor 변수가 null이거나 없을 때
+                    ? `<li class="mymajor"><span> </span> <span>로그인 후 이용 가능</span> <span> </span></li>`
+                    : `<li class="mymajor"><span>나의 학과</span> <span>${myMajor}</span> <span>${myData ? myData.clicks : 0}</span></li>`;
+                // myData가 없을 경우를 대비하여 ${myData.clicks} 대신 ${myData ? myData.clicks : 0}으로 안전하게 수정
+                // 나머지 리더보드
+                data.sort((a, b) => b.clicks - a.clicks)
+                const leaderboardItems = data
+                    .map((item, i) =>
+                        `<li><span>${i + 1}위</span> <span>${item.major}</span> <span>${item.clicks}</span></li>`
+                    )
+                    .join('');
 
-                    // 위에 원하는 항목 추가 후 innerHTML 설정
-                    ul.innerHTML = `
-                        ${myRankInfo}
-                        ${leaderboardItems}
-                    `;
-                })
-                .catch(err => console.error('리더보드 로딩 실패:', err));
-        }
+                // ✅ 1위 학과로 배경 이미지 설정
+                const topRank = data[0];
+                if (topRank) {
+                    setTopMajorBackground(topRank.major);
+                }
 
-        // 기존 sendClick() 함수 (이제 안씀)
-        function sendClick() {
-            fetch('/click', { method: 'POST' })
-                .then(res => {
-                    if (!res.ok) throw new Error('클릭 처리 실패!');
-                    return loadLeaderboard(); // 클릭 후 리더보드 갱신
-                })
-                .catch(err => console.error(err));
-        }
+                // 위에 원하는 항목 추가 후 innerHTML 설정
+                ul.innerHTML = `
+                    ${myRankInfo}
+                    ${leaderboardItems}
+                `;
+            })
+            .catch(err => console.error('리더보드 로딩 실패:', err));
+    }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            loadLeaderboard();
-        });
+    // 기존 sendClick() 함수 (이제 안씀)
+    function sendClick() {
+        fetch('/click', { method: 'POST' })
+            .then(res => {
+                if (!res.ok) throw new Error('클릭 처리 실패!');
+                return loadLeaderboard(); // 클릭 후 리더보드 갱신
+            })
+            .catch(err => console.error(err));
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        loadLeaderboard();
+    });
     </script>
 
     <!-- 리더보드 -->
