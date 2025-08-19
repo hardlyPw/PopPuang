@@ -133,6 +133,18 @@
         .autocomplete-items div:hover strong {
             color: white;
         }
+        .error-message {
+            color: #e74c3c; /* 선명한 빨간색 */
+            font-size: 14px; /* 글자 크기 */
+            font-weight: bold; /* 글자 굵게 */
+            text-align: center; /* 가운데 정렬 */
+            /* 비밀번호 창과 버튼 사이의 간격 조절 */
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+        .error-message p {
+            margin: 0;
+        }
 
         /* 비밀번호 확인 메시지(디자인) */
         /* 기존 코드 */
@@ -181,7 +193,9 @@
         <input id="password" type="password" name="password" placeholder="비밀번호" required />
         <input id="password-confirm" type="password" name="password_confirm" placeholder="비밀번호 확인" required />
 
-        <p id="form-message" class="error"></p>
+        <div th:if="${duplicateError}" class="error-message">
+            <p th:text="${duplicateError}"></p>
+        </div>
 
         <button type="submit">회원가입</button>
     </form>
