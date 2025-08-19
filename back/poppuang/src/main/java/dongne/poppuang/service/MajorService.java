@@ -6,6 +6,8 @@ import dongne.poppuang.repository.MajorRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class MajorService {
     MajorRepository majorRepository;
@@ -27,5 +29,14 @@ public class MajorService {
         major.setName(name);
         major.setClicks(0L);
         return major;
+    }
+
+    @Transactional
+    public List<Major> getAllMajors() {
+        List<Major> majors = majorRepository.findAll();
+        Major e = majorRepository.findByName("도시계획_부동산학과");
+        majors.remove(e);
+        majors
+        return majors;
     }
 }

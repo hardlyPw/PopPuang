@@ -28,6 +28,13 @@ public class ClickService {
 
         return user;
     }
+
+    @Transactional
+    public Long getClicks(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저는 존재하지 않습니다"));
+        return user.getClicks();
+    }
     
 }
 

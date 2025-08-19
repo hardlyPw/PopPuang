@@ -16,6 +16,8 @@
 
             /* ✅ 내용물이 가상요소 위로 올라오도록 합니다. */
             z-index: 1;
+
+            overflow-x: hidden;
         }
 
         /* ✅ 배경 이미지를 위한 가상 요소 추가 */
@@ -176,13 +178,9 @@
         </form>
     </div>
 
-    <div th:unless="${isLoggedIn}" style="display: flex;">
-        <form th:action="@{/login}" method="get">
-            <button type="submit">로그인</button>
-        </form>
-        <form th:action="@{/register}" method="get">
-            <button type="submit">회원가입</button>
-        </form>
+    <div th:unless="${isLoggedIn}" style="display: flex; gap: 10px;">
+        <button onclick="location.href='/login'">로그인</button>
+        <button onclick="location.href='/register'">회원가입</button>
     </div>
 </div> <!-- ← 헤더 닫힘 누락되어 있어 추가 -->
 
@@ -215,7 +213,7 @@
     '국어국문학과': '/images/major_logo/korean_language_literature_logo.jpg',
     '국제물류학과': '/images/major_logo/international_logistics_logo.jpg',
     '기계공학부': '/images/major_logo/mechanical_logo.jpg',
-    '도시계획_부동산학과': '/images/major_logo/urban_planning_real_estate_logo.jpg',
+    '도시계획·부동산학과': '/images/major_logo/urban_planning_real_estate_logo.jpg',
     '도시시스템공학과': '/images/major_logo/urban_design_studles_logo.jpg',
     '미디어커뮤니케이션학부': '/images/major_logo/media_communication_logo.jpg',
     '물리학과': '/images/major_logo/physics_logo.jpg',
@@ -316,6 +314,18 @@ function setTopMajorBackground(topMajor) {
     }
 }
 
+    // 초기 카운트 가져오기
+    function loadInitialCount() {
+        fetch('/myclicks')
+            .then(res => res.ok ? res.json() : Promise.reject())
+            .then(data => {
+                if (data && typeof data === 'number') {
+                    setCount(data);
+                }
+            })
+            .catch(() => { /* 엔드포인트 없으면 무시 */ });
+    }
+
     // 리더보드 불러오는 함수
     // 배경 학과 이미지 변경 기능 추가
     function loadLeaderboard() {
@@ -365,6 +375,7 @@ function setTopMajorBackground(topMajor) {
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+        loadInitialCount();
         loadLeaderboard();
     });
     </script>

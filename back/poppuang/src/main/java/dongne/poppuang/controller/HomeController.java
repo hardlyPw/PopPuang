@@ -1,6 +1,7 @@
 package dongne.poppuang.controller;
 
 import dongne.poppuang.domain.LoginedUserDto;
+import dongne.poppuang.service.MajorService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import dongne.poppuang.domain.Major;
@@ -15,11 +16,10 @@ import java.util.List;
 
 @Controller
 public class HomeController {
+    MajorService majorService;
 
-    private final JpaMajorRepository jpaMajorRepository;
-
-    public HomeController(JpaMajorRepository jpaMajorRepository) {
-        this.jpaMajorRepository = jpaMajorRepository;
+    public HomeController(MajorService majorService) {
+        this.majorService = majorService;
     }
 
     @GetMapping("/")
@@ -43,7 +43,7 @@ public class HomeController {
 
     @GetMapping("/register")
     public String signup(Model model) {
-        List<Major> majors = jpaMajorRepository.findAll();
+        List<Major> majors = majorService.getAllMajors();
         model.addAttribute("majors", majors); // major객체 자체를 뷰로 넘겨줌. 뷰에서도 major.name이런식으로 활용가능. Major객체 리스트 majors를 넘김
         return "signUp";
     }

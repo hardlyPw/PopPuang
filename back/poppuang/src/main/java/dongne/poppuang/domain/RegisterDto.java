@@ -10,4 +10,10 @@ public class RegisterDto {
     private String department; // User 엔티티에서는 major로 명시
     private String password; // User 엔티티에서는 pw로 명시
     private String passwordConfirm; // User 엔티티에서는 안씀
+
+    // 가운뎃점 처리
+    public void setDepartment(String department) {
+        if (department.equals("도시계획·부동산학과")) department = "도시계획_부동산학과";
+        this.department = department;
+    }
 }

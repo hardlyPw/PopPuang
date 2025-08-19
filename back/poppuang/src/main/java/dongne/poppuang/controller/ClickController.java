@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,5 +27,17 @@ public class ClickController {
             // 세션이 없거나 새로 생성된 세션인 경우 (로그아웃 상태)
             // 필요시 로직 추가
         }
+    }
+
+    @GetMapping("/myclicks")
+    public Long getMyClicks(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null && !session.isNew()) {
+            LoginedUserDto loginedUser = (LoginedUserDto) session.getAttribute("loginedUser");
+            Long myId = loginedUser.getId();
+            return clickService.getClicks(myId);
+        }
+
+        return null;
     }
 }
