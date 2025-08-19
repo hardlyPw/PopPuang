@@ -75,6 +75,11 @@ public class UserService {
         return null;
     }
 
+    public boolean isUidDuplicate(String uid) {
+        // findByUid를 호출했을 때 결과가 존재하면(isPresent() == true) 중복된 것입니다.
+        return userRepository.findByUid(uid).isPresent();
+    }
+
 
     public String getMajor(String username) {
         return userRepository.findByUid(username).get().getMajor().getName();
