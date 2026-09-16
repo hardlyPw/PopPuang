@@ -2,7 +2,7 @@
 
 **푸앙이를 클릭하며 학과별 점수를 쌓고 순위를 확인하는 웹 서비스입니다.**
 
-![PopPuang 서비스 미리보기](docs/images/poppuang-preview.png)
+![PopPuang 서비스 미리보기](docs/images/poppuang-preview.jpg)
 
 <sub>저장소의 실제 HTML·이미지를 바탕으로 만든 정적 미리보기입니다. 화면 간격은 소개용으로 조정했고, 순위·클릭 수는 예시 데이터입니다. 운영 서비스나 DB 연결을 캡처한 화면은 아닙니다.</sub>
 
